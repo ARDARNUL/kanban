@@ -1,79 +1,74 @@
-body{
-    width: 100%;
-    flex-grow:1;
-}
-
-#columns{
+.columns{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    height: 100%;  
-    width: 100%; 
+    justify-content: space-between;
+    padding: 0;
 }
 
 .column{
+    width: 22%;
+    margin: auto;
+    margin-top: 0;
+    background-color: #0F0F0F;
+    border-radius: 4px;
+    padding: 8px;
     min-height: 1000px;
-    text-align: center;
-    padding: 10px;
-    margin: 10px;
-    width: 400px;
-    height: 100%;
-    background-color: #686868;
-    border: 3px solid #00B897;
-    flex-grow:1;
+}
+
+.card{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #1D1D1D;
+    border: 2px solid #A554D8;
+    margin-top: 10px;
+    border-radius: 5px;
 }
 
 ul{
     list-style-type: none;
+    margin: 0;
     padding: 0;
+}
+
+.done{
+    background-color: #9af58e;
+}
+.nodone{
+    background-color: #f78888;
+}
+.reason{
+    margin: 5px;
+}
+
+button{
+    margin: 10px;
+    width: 90%;
+}
+input{
+    margin: 10px;
+    width: 80%;
+    outline: none;
+    background-color: #A554D8;
+    color: white;
 }
 
 .form{
     display: flex;
-    flex-direction: row;   
-    justify-content: center;
-    align-items: center;
-    gap: 20px
-}
-
-form{
-    display: flex;
     flex-direction: column;
-    min-width: 15%;
     align-items: center;
-    border: 2px solid #00B897;
+    width: 20%;
+    background-color: #1D1D1D;
+    border: 2px solid #A554D8;
+    margin: 2px;
     border-radius: 5px;
-    padding-bottom: 20px;
-    background-color: white;
-    color: #00B897  ;
+    color: white;
 }
 
-input{
-    max-width: 90%;
-    border-radius: 4px;
+h3{
+    color: white;
 }
 
-label{
-    padding: 10px 5px 5px 10px;
-}
-
-ul{
-    list-style-type: none;
-    padding: 0;
-}
-
-li{
-    margin-top: 5px;
-}
-
-.input{
-    outline: none;
-}
-
-.but{
-    background-color: #00B897;
-    border: none;
-    margin-top: 5px;
-    font-size: 20px;
+p{
     color: white;
 }

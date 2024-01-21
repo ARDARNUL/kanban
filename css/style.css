@@ -1,0 +1,30 @@
+body{
+    width: 100%;
+    flex-grow:1;
+}
+
+#columns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 100%;  
+    width: 100%; 
+}
+
+.column{
+    min-height: 1000px;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    width: 400px;
+    height: 100%;
+    background-color: #686868;
+    border: 3px solid #00B897;
+    flex-grow:1;
+}
+
+ul{
+    list-style-type: none;
+    padding: 0;
+}
+

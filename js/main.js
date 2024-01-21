@@ -1,44 +1,36 @@
-let app = new Vue({
-    el: "#app",
-    data: {
-    },
-    methods: {
-
-    },
-});
-
 Vue.component("kanban",{
     template:`
         <div class="kanban">
-            <ul id="columns">
-                <li>
-            <ul class="cards">
-                <li></li>
-            </ul>
-            </li>
+        
+        <button>add</button>
 
-            <ul id="columns">
-                <li>
-            <ul class="cards">
-                <li></li>
-            </ul>
-            </li>
+        <ul id="columns">
+        <li class="column">
+        <ul>
+        <li></li>
+        </ul>
+        </li>
 
-            <ul id="columns">
-                <li>
-            <ul class="cards">
-                <li></li>
-            </ul>
-            </li>
+        <li class="column">
+        <ul>
+        <li></li>
+        </ul>
+        </li>
 
-            <ul id="columns">
-                <li>
-            <ul class="cards">
-                <li></li>
-            </ul>
-            </li>
+        <li class="column">
+        <ul>
+        <li></li>
+        </ul>
+        </li>
 
+        <li class="column">
+        <ul>
+        <li></li>
+        </ul>
+        </li>
+        </ul>
         </div>
+        
     `,
 
     data(){
@@ -51,11 +43,44 @@ Vue.component("kanban",{
             saveColumns:[],
             cards:[],
 
+            id: 0,
             name:[],
             text:[],
 
             dateCreate: new Date(),
-            dedline: string
+            deadlin:null,
+            dedline: [],
+
+            year: null,
+            month: null,
+            day: null,  
+
         }
     }
+});
+
+Vue.component("addCart",{
+    template: `
+    <div>
+        <form>
+            <label>Title</label><input>
+
+            <label>label</label><input>
+
+            <input>
+
+            <button>Create</button>
+        <form>
+    </div>
+    `
 })
+
+
+let app = new Vue({
+    el: "#app",
+    data: {
+    },
+    methods: {
+
+    },
+});

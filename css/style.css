@@ -28,3 +28,52 @@ ul{
     padding: 0;
 }
 
+.form{
+    display: flex;
+    flex-direction: row;   
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    min-width: 15%;
+    align-items: center;
+    border: 2px solid #00B897;
+    border-radius: 5px;
+    padding-bottom: 20px;
+    background-color: white;
+    color: #00B897  ;
+}
+
+input{
+    max-width: 90%;
+    border-radius: 4px;
+}
+
+label{
+    padding: 10px 5px 5px 10px;
+}
+
+ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+li{
+    margin-top: 5px;
+}
+
+.input{
+    outline: none;
+}
+
+.but{
+    background-color: #00B897;
+    border: none;
+    margin-top: 5px;
+    font-size: 20px;
+    color: white;
+}

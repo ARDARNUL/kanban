@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 Vue.component("kanban", {
     template: `
-<div class="board">
+<div class="kanban">
 
 <form class="form">
         <div id="createcard">
@@ -209,9 +209,6 @@ Vue.component("kanban", {
             const itemID = evt.dataTransfer.getData('oid')
             const column = evt.dataTransfer.getData('column')
             const reas = evt.dataTransfer.getData('reas')
-            console.log(itemID)
-            console.log(column)
-            console.log(ncolumn)
 
             if(column==1&&ncolumn==2){
                 this.MoveR(itemID,column)

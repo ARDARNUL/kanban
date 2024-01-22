@@ -72,7 +72,7 @@ Vue.component("kanban", {
     <h3>Выполненные задачи</h3>  
     <ul>
         <li v-for="card in column4">
-            <card @deletethis="Delete" :last_red="card.last_red" @moveright="MoveR" :column=4 :id="card.id" :result="card.result" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :reasons="card.reasons" :last_red="card.last_red" :column=4 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul>
 </li>
@@ -87,6 +87,7 @@ Vue.component("kanban", {
             column2:[],
             column3:[],
             column4:[],
+            columnx:[],
             allColumns:[],
 
             id:0,
@@ -164,6 +165,14 @@ Vue.component("kanban", {
                         this.column3.splice(i, 1)
                 }}
             }
+            if(col==4){
+                for(let i = 0; i < this.column4.length; i++){
+                    if(this.column4[i].id==id){
+                        this.column4[i].reasons.push(reason)    
+                        this.column3.push(this.column4[i])
+                        this.column4.splice(i, 1)
+                }}
+            }
         },
         MoveR(id,col){
             if(col==1){
@@ -206,10 +215,6 @@ Vue.component("kanban", {
                                 }
                             }
                         }
-                        console.log(Array.isArray(this.column4))
-                        console.log(Array.isArray(this.column3))
-                        console.log(Array.isArray(this.column2))
-                        console.log(Array.isArray(this.column1))
                         this.column4.push(this.column3[i])
                         this.column3.splice(i, 1)
                 }
@@ -289,6 +294,21 @@ Vue.component("kanban", {
                     this.column3[i].desc=descnew,
                     this.column3[i].deadline=this.deadline
                     this.column3[i].last_red=String(last_red)
+            }}
+            for(let i = 0; i < this.column4.length; i++){
+                if(this.column4[i].id==id){
+                    this.deadlin = deadlinenew
+                    this.year = this.deadlin[0] + this.deadlin[1] + this.deadlin[2] + this.deadlin[3]
+                    this.month = this.deadlin[5] + this.deadlin[6]
+                    this.day= this.deadlin[8] + this.deadlin[9]
+                    this.deadline = []
+                    this.deadline.push({day:this.day, month:this.month, year:this.year})
+                    let last_red = new Date()
+
+                    this.column4[i].title=titlenew,
+                    this.column4[i].desc=descnew,
+                    this.column4[i].deadline=this.deadline
+                    this.column4[i].last_red=String(last_red)
             }}
         }
     },

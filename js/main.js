@@ -72,7 +72,7 @@ Vue.component("kanban", {
     <h3>Выполненные задачи</h3>  
     <ul>
         <li v-for="card in column4">
-            <card @deletethis="Delete" :last_red="card.last_red" :column=4 :id="card.id" :result="card.result" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" :last_red="card.last_red" @moveright="MoveR" :column=4 :id="card.id" :result="card.result" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul>
 </li>
@@ -148,10 +148,18 @@ Vue.component("kanban", {
             }}
         },
         MoveL(id,col,reason){
+            if(col==2){
+                for(let i = 0; i < this.column2.length; i++){
+                    if(this.column2[i].id==id){
+                        this.column1.push(this.column2[i])
+                        this.column2.splice(i, 1)
+                }}
+            }
+
             if(col==3){
                 for(let i = 0; i < this.column3.length; i++){
                     if(this.column3[i].id==id){
-                        this.column3[i].reasons.push(reason)
+                        this.column3[i].reasons.push(reason)    
                         this.column2.push(this.column3[i])
                         this.column3.splice(i, 1)
                 }}
@@ -198,9 +206,15 @@ Vue.component("kanban", {
                                 }
                             }
                         }
+                        console.log(Array.isArray(this.column4))
+                        console.log(Array.isArray(this.column3))
+                        console.log(Array.isArray(this.column2))
+                        console.log(Array.isArray(this.column1))
                         this.column4.push(this.column3[i])
                         this.column3.splice(i, 1)
-                }}
+                }
+            }
+            
             }
         },
 
@@ -220,6 +234,9 @@ Vue.component("kanban", {
                 this.MoveR(itemID,column)                
             }
             if(column==3&&ncolumn==2&&reas!="null"){
+                this.MoveL(itemID,column,reas)
+            }
+            if(column==2&&ncolumn==1){
                 this.MoveL(itemID,column,reas)
             }
         },

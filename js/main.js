@@ -192,31 +192,22 @@ Vue.component("kanban", {
             else if(col==3){
                 for(let i = 0; i < this.column3.length; i++){
                     if(this.column3[i].id==id){
+                        const item = this.column3[i].deadline[0]
+
                         let current_date = new Date()
-                        if (current_date.getFullYear() > Number(this.column3[i].deadline[0].year)){
+                        const year = current_date.getFullYear()
+                        const month = current_date.getMonth() +1
+                        const day = current_date.getDate()
+                        
+                        
+                        if (Number(item.year) < year || (Number(item.month) <= month) && Number(item.day) < day) {
+                            this.column3[i].result="fail"
+                        } else {
                             this.column3[i].result="success"
                         }
-                        else if(current_date.getFullYear() < Number(this.column3[i].deadline[0].year)){
-                            this.column3[i].result="fail"
-                        }
-                        else if(current_date.getFullYear() == Number(this.column3[i].deadline[0].year)){
-                            if ((current_date.getMonth()+1) > Number(this.column3[i].deadline[0].month)){
-                                this.column3[i].result="success"
-                            }
-                            else if((current_date.getMonth()+1) < Number(this.column3[i].deadline[0].month)){
-                                this.column3[i].result="fail"
-                            }
-                            else if((current_date.getMonth()+1) == Number(this.column3[i].deadline[0].month)){
-                                if (current_date.getDate() <= Number(this.column3[i].deadline[0].day)){
-                                    this.column3[i].result="success"
-                                }
-                                else if(current_date.getDate() > Number(this.column3[i].deadline[0].day)){
-                                    this.column3[i].result="fail"
-                                }
-                            }
-                        }
-                        console.log(typeof(this.column3[i].result));
-                        console.log(this.column3[i].result);
+
+                        // console.log(typeof(this.column3[i].result));
+                        // console.log(this.column3[i].result);
                         this.column4.push(this.column3[i])
                         this.column3.splice(i, 1)
                 }

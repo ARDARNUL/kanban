@@ -72,7 +72,7 @@ Vue.component("kanban", {
     <h3>Выполненные задачи</h3>  
     <ul>
         <li v-for="card in column4">
-            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :reasons="card.reasons" :last_red="card.last_red" :column=4 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :result="card.result" :reasons="card.reasons" :last_red="card.last_red" :column=4 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul>
 </li>
@@ -102,7 +102,7 @@ Vue.component("kanban", {
             day:null,
             deadlin:null,
             deadline:[],
-
+            result:null
         }
     },
     methods: {
@@ -215,11 +215,12 @@ Vue.component("kanban", {
                                 }
                             }
                         }
+                        console.log(typeof(this.column3[i].result));
+                        console.log(this.column3[i].result);
                         this.column4.push(this.column3[i])
                         this.column3.splice(i, 1)
                 }
             }
-            
             }
         },
 
@@ -295,21 +296,6 @@ Vue.component("kanban", {
                     this.column3[i].deadline=this.deadline
                     this.column3[i].last_red=String(last_red)
             }}
-            for(let i = 0; i < this.column4.length; i++){
-                if(this.column4[i].id==id){
-                    this.deadlin = deadlinenew
-                    this.year = this.deadlin[0] + this.deadlin[1] + this.deadlin[2] + this.deadlin[3]
-                    this.month = this.deadlin[5] + this.deadlin[6]
-                    this.day= this.deadlin[8] + this.deadlin[9]
-                    this.deadline = []
-                    this.deadline.push({day:this.day, month:this.month, year:this.year})
-                    let last_red = new Date()
-
-                    this.column4[i].title=titlenew,
-                    this.column4[i].desc=descnew,
-                    this.column4[i].deadline=this.deadline
-                    this.column4[i].last_red=String(last_red)
-            }}
         }
     },
     mounted(){
@@ -357,7 +343,7 @@ Vue.component("kanban", {
 
 Vue.component("card", {
     template: `
-<div class="card" draggable="true" :key="id" @dragstart="startDrag($event, id, column, reason)">
+<div class="card" draggable="true" :key="id" @dragstart="startDrag($event, id, column, reason, result)">
 <h4>{{this.title}}</h4>
 <p v-if="result=='success'">Карточка выполнена в срок<p>
 <p v-if="result=='fail'">Карточка не выполнена в срок<p>
@@ -439,8 +425,8 @@ min="2023-01-01" max="2030-12-31">
             evt.dataTransfer.setData('oid', oid)
             evt.dataTransfer.setData('column', column)
             evt.dataTransfer.setData('reas', reason)
-          },
-      
+            console.log(this.result);
+          }     
     }, 
     props:{ 
         column:{
@@ -470,7 +456,7 @@ min="2023-01-01" max="2030-12-31">
         result:{
             type:String,
             required:false,
-        }
+        },
         
     },
     computed: {
@@ -483,6 +469,6 @@ let app = new Vue({
     data: {
     },
     methods: {
-
+        
     },
 });

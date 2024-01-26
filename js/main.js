@@ -27,6 +27,17 @@ Vue.component("kanban", {
           <input type="date" id="start" name="start" v-model="deadlin"
 
           min="2023-01-01" max="2030-12-31">
+          <div>
+            
+        <label for="priority">priority:</label>
+            <select id="priority" v-model.number="priority">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+          </div>
           </div>
           
       </div>
@@ -42,7 +53,7 @@ Vue.component("kanban", {
     <h3>Запланированные задачи</h3>
     <ul>
         <li v-for="card in column1">
-            <card @deletethis="Delete" @moveright="MoveR" @edit="EditCard" :last_red="card.last_red" :column=1 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" @moveright="MoveR" @edit="EditCard" :last_red="card.last_red" :column=1 :id="card.id" :title="card.title" :priority="card.priority" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul>
 </li>
@@ -52,7 +63,7 @@ Vue.component("kanban", {
     <h3>Задачи в работе</h3>
     <ul>
         <li v-for="card in column2">
-            <card @deletethis="Delete" @moveright="MoveR" @edit="EditCard" :reasons="card.reasons"  :last_red="card.last_red" :column=2 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" @moveright="MoveR" @edit="EditCard" :reasons="card.reasons"  :last_red="card.last_red" :column=2 :id="card.id" :title="card.title" :priority="card.priority" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul>
 </li>
@@ -62,7 +73,7 @@ Vue.component("kanban", {
     <h3>Тестирование</h3> 
     <ul>
         <li v-for="card in column3">
-            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :reasons="card.reasons"  :last_red="card.last_red" @moveright="MoveR" :column=3 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :reasons="card.reasons"  :last_red="card.last_red" @moveright="MoveR" :column=3 :id="card.id" :title="card.title" :priority="card.priority" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul> 
 </li>
@@ -72,7 +83,7 @@ Vue.component("kanban", {
     <h3>Выполненные задачи</h3>  
     <ul>
         <li v-for="card in column4">
-            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :result="card.result" :reasons="card.reasons" :last_red="card.last_red" :column=4 :id="card.id" :title="card.title" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
+            <card @deletethis="Delete" @moveleft="MoveL" @edit="EditCard" :result="card.result" :reasons="card.reasons" :last_red="card.last_red" :column=4 :id="card.id" :title="card.title" :priority="card.priority" :desc="card.desc" :deadline="card.deadline" :createtime="card.createtime"></card>
         </li>
     </ul>
 </li>
@@ -90,6 +101,7 @@ Vue.component("kanban", {
             columnx:[],
             allColumns:[],
 
+            priority:null,
             id:0,
             title:null,
             desc:null,
@@ -107,7 +119,7 @@ Vue.component("kanban", {
     },
     methods: {
         CreateCard(){
-            if(this.title&&this.desc&&this.deadlin){
+            if(this.title&&this.desc&&this.deadlin&&this.priority){
                 this.deadline=[]
                 this.year = this.deadlin[0] + this.deadlin[1] + this.deadlin[2] + this.deadlin[3]
                 this.month = this.deadlin[5] + this.deadlin[6]
@@ -125,7 +137,9 @@ Vue.component("kanban", {
                     last_red:"",
                     reasons:[],
                     result:null,
+                    priority:this.priority
                 }
+                console.log(this.priority);
                 this.id+=1
                 this.column1.push(info)
             }
@@ -152,6 +166,7 @@ Vue.component("kanban", {
             if(col==2){
                 for(let i = 0; i < this.column2.length; i++){
                     if(this.column2[i].id==id){
+                        this.column1.sort((a, b) => b.priority - a.priority);
                         this.column1.push(this.column2[i])
                         this.column2.splice(i, 1)
                 }}
@@ -178,6 +193,7 @@ Vue.component("kanban", {
             if(col==1){
                 for(let i = 0; i < this.column1.length; i++){
                     if(this.column1[i].id==id){
+                        this.column1.sort((function (a, b) {  return a - b;  })) 
                         this.column2.push(this.column1[i])
                         this.column1.splice(i, 1)
                 }}
@@ -185,6 +201,7 @@ Vue.component("kanban", {
             else if(col==2){
                 for(let i = 0; i < this.column2.length; i++){
                     if(this.column2[i].id==id){
+                        this.column2.sort((function (a, b) {  return a - b;  })) 
                         this.column3.push(this.column2[i])
                         this.column2.splice(i, 1)
                 }}
@@ -205,10 +222,9 @@ Vue.component("kanban", {
                         } else {
                             this.column3[i].result="success"
                         }
-
-                        // console.log(typeof(this.column3[i].result));
-                        // console.log(this.column3[i].result);
+                        console.log(this.column3)
                         this.column4.push(this.column3[i])
+                        this.column3=this.column3.sort((function (a, b) {  return a - b;  })) 
                         this.column3.splice(i, 1)
                 }
             }
@@ -240,7 +256,7 @@ Vue.component("kanban", {
 
 
 
-        EditCard(id,titlenew,descnew,deadlinenew){
+        EditCard(id,titlenew,descnew,deadlinenew,prioritynew){
             this.log+=1
             for(let i = 0; i < this.column1.length; i++){
                 if(this.column1[i].id==id){
@@ -253,6 +269,7 @@ Vue.component("kanban", {
                     let last_red = new Date()
 
                     this.column1[i].title=titlenew,
+                    this.column1[i].priority = prioritynew
                     this.column1[i].desc=descnew,
                     this.column1[i].deadline=this.deadline
                     this.column1[i].last_red=String(last_red)
@@ -268,6 +285,7 @@ Vue.component("kanban", {
                     let last_red = new Date()
 
                     this.column2[i].title=titlenew,
+                    this.column2[i].priority = prioritynew
                     this.column2[i].desc=descnew,
                     this.column2[i].deadline=this.deadline
                     this.column2[i].last_red=String(last_red)
@@ -283,6 +301,7 @@ Vue.component("kanban", {
                     let last_red = new Date()
 
                     this.column3[i].title=titlenew,
+                    this.column3[i].priority = prioritynew
                     this.column3[i].desc=descnew,
                     this.column3[i].deadline=this.deadline
                     this.column3[i].last_red=String(last_red)
@@ -334,8 +353,9 @@ Vue.component("kanban", {
 
 Vue.component("card", {
     template: `
-<div class="card" draggable="true" :key="id" @dragstart="startDrag($event, id, column, reason, result)">
+<div class="card" draggable="true" :key="id" @dragstart="startDrag($event, id, column, reason, result, )">
 <h4>{{this.title}}</h4>
+<p>Приоритет:{{this.priority}}</p>
 <p v-if="result=='success'">Карточка выполнена в срок<p>
 <p v-if="result=='fail'">Карточка не выполнена в срок<p>
 <p>Описание: {{this.desc}}</p>
@@ -389,6 +409,7 @@ min="2023-01-01" max="2030-12-31">
             descnew:null,
             deadlinenew:null,
             reason:null,
+            prioritynew:null,
         }
     },
     methods: {
@@ -405,9 +426,9 @@ min="2023-01-01" max="2030-12-31">
             this.edit=!this.edit
         },
         RedCard(){
-            if(this.titlenew&&this.descnew&&this.deadlinenew){
+            if(this.titlenew&&this.descnew&&this.deadlinenew&&this.prioritynew){
                 this.edit=false               
-                this.$emit("edit",this.id,this.titlenew,this.descnew,this.deadlinenew); 
+                this.$emit("edit",this.id,this.titlenew,this.descnew,this.deadlinenew,this.prioritynew); 
             }  
         },
         startDrag(evt, oid, column,reason) {
@@ -448,7 +469,9 @@ min="2023-01-01" max="2030-12-31">
             type:String,
             required:false,
         },
-        
+        priority:{
+            type: Number,
+        },
     },
     computed: {
     }
